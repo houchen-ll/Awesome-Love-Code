@@ -5,10 +5,27 @@
     <title>一封情书</title>
     <link rel="icon" type="image/x-icon" href="https://i.loli.net/2021/06/03/lFg2V4WUcmkB98G.png">
     <meta name="language" content="zh-CN">
-    <meta name="title" content="小孙同学">
+    <meta name="title" content="陆春雨同学">
     <meta name="github" content="https://github.com/sun0225SUN/Awesome-Love-Code">
     <meta name="describe" content="收集不易，您的star是我坚持的动力，同时也欢迎各位PR哦! ">
     <link type="text/css" rel="stylesheet" href="./Love_files/default.css">
+    <!-- 调整布局，避免文字被遮挡 -->
+    <style>
+        #canvas {
+            position: relative;
+            margin-left: 80px;  /* 整体右移画布 */
+            z-index: 1;
+        }
+        #text {
+            position: relative;
+            left: 50px;       /* 整体右移文字框 */
+            width: 400px;      /* 根据文字长度调整宽度 */
+            z-index: 10;
+            max-height: 350px;
+            overflow-y: auto;
+            scroll-padding-right: 20px;
+        }
+    </style>
     <script type="text/javascript" src="./Love_files/jquery.min.js"></script>
     <script type="text/javascript" src="./Love_files/jscex.min.js"></script>
     <script type="text/javascript" src="./Love_files/jscex-parser.js"></script>
@@ -29,29 +46,27 @@
         <div id="wrap">
             <div id="text">
                 <div id="code">
-                    <span class="say">一定要爱你</span><br><br>
-                    <span class="say">我知道你是一个天真善良温柔的女孩</span><br>
-                    <span class="say">真的希望自己能够配上你</span><br>
-                    <span class="say">如果你能给我机会让我好好的爱你</span><br>
-                    <span class="say">真的只想真心真意对你说</span><br>
+                    <span class="say">每月的一封信，这个月我想换个方式给你，想来想去就在网页上给你写一封，也满足你的“惊喜感”</span><br><br>
+                    <span class="say">最近我们有过很多争吵，每次都没有把事情说清楚就草草结束，在这里我想跟你表达一下</span><br>
+                    <span class="say">你说的挺对，我是一个淡人，很淡，我的生活也很淡，每天循规蹈矩没有什么过多的惊喜和刺激</span><br>
+                    <span class="say">可能这样的生活能给足我安全感，我需要把事情规划好，然后去做，虽然我时常嘴上说着到时候再看</span><br>
+                    <span class="say">自从跟你相识后，我开始慢慢把你纳入我的计划中，这可能有点自私了，对于你来说</span><br>
                     <br>
-                    <span class="say">我爱你一定爱到花都开了 鸟儿把歌唱</span><br>
-                    <span class="say">爱到牛郎织女为我们点头</span><br>
-                    <span class="say">爱到花儿绽放鸟儿成群 把我们环绕</span><br>
-                    <span class="say">爱到每道彩虹映出你的美</span><br>
+                    <span class="say">因为在你的视角来说，我们不管见面还是怎么都是按部就班的，一点没有你渴望的热情</span><br>
+                    <span class="say">这里我跟你说句对不起，是我的问题，这一部分我只能说尽量改，在我有限的脑容量里给你足够的回应和惊喜</span><br>
+                    <span class="say">请你谅解</span><br>
+                    <span class="say">之后呢我想跟你说</span><br>
                     <br>
-                    <span class="say">我爱你一定爱到海枯石烂 永远不后悔</span><br>
-                    <span class="say">爱到来生来世也会说无悔</span><br>
-                    <span class="say">就把这首动听的歌唱给心爱的女孩</span><br>
+                    <span class="say">我爱你 永远不后悔</span><br>
                     <span class="say">真的希望你能给我个机会</span><br>
                     <span class="say">让我去爱你</span><br>
                     <br>
-                    <span class="say"><span class="space"></span> -- 你的，太阳。</span>
+                    <span class="say"><span class="space"></span> -- 爱你的李厚宸</span>
                 </div>
             </div>
             <div id="clock-box">
-                <a href="https://sunguoqi.com" target="_blank">星星</a> 和 <a href="https://sunguoqi.com"
-                    target="_blank">月亮</a> 在一起的
+                <a href="https://sunguoqi.com" target="_blank">李厚宸</a> 和 <a href="https://sunguoqi.com"
+                    target="_blank">陆春雨</a> 相识的
                 <div id="clock"></div>
             </div>
             <canvas id="canvas" width="1100" height="680"></canvas>
@@ -59,7 +74,7 @@
 
     </div>
 
-    <audio preload="auto" autoplay="" id="media" src="love.mp3" autoplay preload loop="loop"></audio>
+    <audio id="media" src="love.mp3" preload="auto" loop controls></audio>
 
     <script>
         (function () {
@@ -121,6 +136,8 @@
                 var offset = canvas.offset(), x, y;
                 x = e.pageX - offset.left;
                 y = e.pageY - offset.top;
+                // 点击后触发音乐播放
+                document.getElementById('media').play();
                 if (seed.hover(x, y)) {
                     hold = 0;
                     canvas.unbind("click");
@@ -191,12 +208,8 @@
             }));
 
             var textAnimate = eval(Jscex.compile("async", function () {
-                var together = new Date();
-                together.setFullYear(2001, 02, 25);
-                together.setHours(0);
-                together.setMinutes(0);
-                together.setSeconds(0);
-                together.setMilliseconds(0);
+                // 从 2025 年 2 月 16 日开始计时
+                var together = new Date(2025, 1, 16, 0, 0, 0, 0);
 
                 $("#code").show().typewriter();
                 $("#clock-box").fadeIn(500);
@@ -205,6 +218,7 @@
                     $await(Jscex.Async.sleep(1000));
                 }
             }));
+            
 
             var runAsync = eval(Jscex.compile("async", function () {
                 $await(seedAnimate());
